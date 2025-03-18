@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-6 col-md-5" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <h4 class="mb-4 text-center">Add a text to store on Indexed DB</h4>
+      <textarea formControlName="content" class="form-control"></textarea>
+      <button class="btn btn-primary my-4 w-50 mx-5" type="submit" (click)="onSubmit()">Add</button>
+      <h5 *ngIf="idGenerated">Id Generated {{idGenerated}}</h5>
+    </div>
+  </div>
+</div>
