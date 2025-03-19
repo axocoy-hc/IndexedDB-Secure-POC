@@ -10,11 +10,9 @@ export class IndexedDbService {
   private dbVersion = 1;
   private storeName = 'exstore';
   private db: IDBDatabase | null = null;
-  private pass: any
 
-  constructor(private encryptService: EncryptService) {
+  constructor() {
     this.openDb();
-    this.encryptService.generateAndStoreKey('').subscribe()
   }
 
   private openDb(): void {

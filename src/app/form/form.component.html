@@ -44,8 +44,10 @@
         <textarea formControlName="content" class="form-control"></textarea>
         <button class="btn btn-primary my-4 w-50 float-end" type="submit">Add</button>
         <button class="btn btn-secondary my-4 w-50" type="button" (click)="loadKeyFromJSON()">Load From JSON</button>
-        <h5 *ngIf="idGenerated">Id Generated {{idGenerated}}</h5>
         <p *ngIf="generalKeyJSON">JSON Web Key {{generalKeyJSON}}</p>
+        <hr/>
+        <h5>Items stored and decrypted with current Private Key</h5>
+        <h6 *ngIf="idGenerated">Id Generated {{idGenerated}}</h6>
         <ol>
           <li *ngFor="let item of itemsList">{{item}}</li>
         </ol>
