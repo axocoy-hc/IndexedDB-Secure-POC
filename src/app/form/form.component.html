@@ -38,16 +38,18 @@
       </ul>
     </div>
 
-    <div class="col-12 col-md-5 col-xl-3 offset-md-1" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-      <h4 class="mb-4 text-center">Add a text to store on Indexed DB</h4>
-      <textarea formControlName="content" class="form-control"></textarea>
-      <button class="btn btn-primary my-4 w-50 mx-5" type="submit" (click)="onSubmit()">Add</button>
-      <button class="btn btn-secondary my-4 w-50 mx-5" type="submit" (click)="loadKeyFromJSON()">Load From JSON</button>
-      <h5 *ngIf="idGenerated">Id Generated {{idGenerated}}</h5>
-      <p *ngIf="generalKeyJSON">JSON Web Key {{generalKeyJSON}}</p>
-      <ol>
-        <li *ngFor="let item of itemsList">{{item}}</li>
-      </ol>
+    <div class="col-12 col-md-5 col-xl-3 offset-md-1" >
+      <form class="card card-body" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <h4 class="mb-4 text-center">Add a text to store on Indexed DB</h4>
+        <textarea formControlName="content" class="form-control"></textarea>
+        <button class="btn btn-primary my-4 w-50 float-end" type="submit">Add</button>
+        <button class="btn btn-secondary my-4 w-50" type="button" (click)="loadKeyFromJSON()">Load From JSON</button>
+        <h5 *ngIf="idGenerated">Id Generated {{idGenerated}}</h5>
+        <p *ngIf="generalKeyJSON">JSON Web Key {{generalKeyJSON}}</p>
+        <ol>
+          <li *ngFor="let item of itemsList">{{item}}</li>
+        </ol>
+      </form>
     </div>
   </div>
 </div>

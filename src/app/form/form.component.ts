@@ -46,6 +46,7 @@ export class FormComponent {
 
   refreshList(): void {
     this.itemsList = [];
+    console.log('List with Items is empty')
     this.indexedDbService.getAll()
       .subscribe(valueDe => {
         valueDe.forEach(v => {
@@ -55,26 +56,31 @@ export class FormComponent {
               console.log('VALUE DECRYPTED', result)
             });
         });
+        console.log('List with Items is loading...')
       });
   }
 
   public loadKeyFromJSON(): void {
-    this.encryptService.transformToJsonWebKey(this.generalKey!.derivedKey)
-    .subscribe(jsonDerivatedKey => {
-      this.generalKeyJSON = (JSON.stringify({
-        derivedKey: jsonDerivatedKey, iv: this.encryptService.arrayBufferToBase64(this.generalKey!.iv),
-      }));
-      const jwk = JSON.parse(this.generalKeyJSON as string);
-      console.log('JSON Web Key', jwk)
-      this.encryptService.transformToCryptoKey(jwk.derivedKey)
-        .subscribe(cryptoKey => {
-          this.generalKey = {
-            iv: this.encryptService.base64ToUInt8Array(jwk.iv),
-            derivedKey: cryptoKey
-          }
-          console.log('CryptoKey generated using JSON Web Key data', this.generalKey);
-          this.refreshList();
-        });
-    });
+    if (this.generalKey) {
+      this.encryptService.transformToJsonWebKey(this.generalKey!.derivedKey)
+      .subscribe(jsonDerivatedKey => {
+        this.generalKeyJSON = (JSON.stringify({
+          derivedKey: jsonDerivatedKey, iv: this.encryptService.arrayBufferToBase64(this.generalKey!.iv),
+        }));
+        const jwk = JSON.parse(this.generalKeyJSON as string);
+        console.log('JSON Web Key', jwk);
+        this.encryptService.transformToCryptoKey(jwk.derivedKey)
+          .subscribe(cryptoKey => {
+            this.generalKey = {
+              iv: this.encryptService.base64ToUInt8Array(jwk.iv),
+              derivedKey: cryptoKey
+            }
+            console.log('CryptoKey generated using JSON Web Key data', this.generalKey);
+            this.refreshList();
+          });
+      });
+    } else {
+      console.warn("Private key is empty");
+    }
   }
 }
