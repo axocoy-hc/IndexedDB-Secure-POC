@@ -33,12 +33,6 @@ export class FormComponent {
           this.generalKey = key;
         }
         console.log('this.generalKey', this.generalKey);
-        this.encryptService.transformToJsonWebKey(this.generalKey.derivedKey)
-          .subscribe(jsonDerivatedKey => {
-            this.generalKeyJSON = (JSON.stringify({
-              derivedKey: jsonDerivatedKey, iv: this.encryptService.arrayBufferToBase64(this.generalKey!.iv),
-            }));
-          })
         return this.encryptService.encryptData(content, this.generalKey.derivedKey, this.generalKey.iv)
       }), switchMap(value => this.indexedDbService.addItem(value)))
       .subscribe(id => {
@@ -65,16 +59,23 @@ export class FormComponent {
   }
 
   public loadKeyFromJSON(): void {
-    const jwk = JSON.parse(this.generalKeyJSON as string);
-    console.log('jwk', jwk)
-    this.encryptService.transformToCryptoKey(jwk.derivedKey)
-      .subscribe(cryptoKey => {
-      this.generalKey = {
-        iv: this.encryptService.base64ToUInt8Array(jwk.iv),
-        derivedKey: cryptoKey
-      }
-      console.log('loadKeyFromJSON', this.generalKey);
-      this.refreshList();
+    this.encryptService.transformToJsonWebKey(this.generalKey!.derivedKey)
+    .subscribe(jsonDerivatedKey => {
+      this.generalKeyJSON = (JSON.stringify({
+        derivedKey: jsonDerivatedKey, iv: this.encryptService.arrayBufferToBase64(this.generalKey!.iv),
+      }));
+
+      const jwk = JSON.parse(this.generalKeyJSON as string);
+      console.log('jwk', jwk)
+      this.encryptService.transformToCryptoKey(jwk.derivedKey)
+        .subscribe(cryptoKey => {
+          this.generalKey = {
+            iv: this.encryptService.base64ToUInt8Array(jwk.iv),
+            derivedKey: cryptoKey
+          }
+          console.log('loadKeyFromJSON', this.generalKey);
+          this.refreshList();
+        });
     });
   }
 }

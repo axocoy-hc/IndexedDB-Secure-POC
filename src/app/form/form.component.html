@@ -6,6 +6,7 @@
       <button class="btn btn-primary my-4 w-50 mx-5" type="submit" (click)="onSubmit()">Add</button>
       <button class="btn btn-secondary my-4 w-50 mx-5" type="submit" (click)="loadKeyFromJSON()">Load From JSON</button>
       <h5 *ngIf="idGenerated">Id Generated {{idGenerated}}</h5>
+      <p *ngIf="generalKeyJSON">JSON Web Key {{generalKeyJSON}}</p>
       <ul>
         <li *ngFor="let item of itemsList">{{item}}</li>
       </ul>
