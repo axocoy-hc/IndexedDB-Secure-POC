@@ -32,13 +32,13 @@ export class FormComponent {
         if (!this.generalKey) {
           this.generalKey = key;
         }
-        console.log('this.generalKey', this.generalKey);
+        console.log('Private Key Generated', this.generalKey);
         return this.encryptService.encryptData(content, this.generalKey.derivedKey, this.generalKey.iv)
       }), switchMap(value => this.indexedDbService.addItem(value)))
       .subscribe(id => {
         this.idGenerated = id;
+        this.refreshList();
         setTimeout(() => {
-          this.refreshList();
           this.idGenerated = undefined
         }, 5000);
       });
@@ -64,16 +64,15 @@ export class FormComponent {
       this.generalKeyJSON = (JSON.stringify({
         derivedKey: jsonDerivatedKey, iv: this.encryptService.arrayBufferToBase64(this.generalKey!.iv),
       }));
-
       const jwk = JSON.parse(this.generalKeyJSON as string);
-      console.log('jwk', jwk)
+      console.log('JSON Web Key', jwk)
       this.encryptService.transformToCryptoKey(jwk.derivedKey)
         .subscribe(cryptoKey => {
           this.generalKey = {
             iv: this.encryptService.base64ToUInt8Array(jwk.iv),
             derivedKey: cryptoKey
           }
-          console.log('loadKeyFromJSON', this.generalKey);
+          console.log('CryptoKey generated using JSON Web Key data', this.generalKey);
           this.refreshList();
         });
     });

@@ -1,15 +1,53 @@
 <div class="container-fluid">
   <div class="row justify-content-center mt-5">
-    <div class="col-12 col-md-6 col-md-5" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="col-12 col-md-4 col-xl-3">
+      <ul>
+        <li>
+          <p class="mt-5">
+            This component first will create a DB using IndexedDB it is an internal browser DB,
+            for this example the name wil be <b>exampledb</b> and then it will create Store Object called <b>exstore</b>
+          </p>
+        </li>
+        <li>
+          <p class="mt-1">
+            After DB was created, it will <b>generate a derived key using as passphase User ID and Email</b>,
+            when derived was generated, it will be used as Private key to encrypt the data on Indexed DB
+          </p>
+        </li>
+        <li>
+          <p class="mt-1">
+            Add a new text to store on local DB and click on Add button.
+            It'll be encrypted using the Private Key created on last step, and stored on local DB
+            (you can check it opening Dev Options). On the bottom you will see a list with the items stored
+            on local DB, and decrypted using our Private Key
+          </p>
+        </li>
+        <li>
+          <p class="mt-1">
+            On click Load From JSON, it will delete the local Private Key stored on memory and will transform it to JSON,
+            this JSON we could send to the BackEnd to be stored as part of the Session Data, but for this example, this JSON
+            will be transformed again to Object and will be used to decrypt local data. You can see more details on Dev Options
+          </p>
+        </li>
+        <li>
+          <p class="mt-1">
+            Using this method we can check if the device is using the same private key to store local data
+            and in case not (for ex. Generate an Error OperationError) we can invalid this session.
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-12 col-md-5 col-xl-3 offset-md-1" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
       <h4 class="mb-4 text-center">Add a text to store on Indexed DB</h4>
       <textarea formControlName="content" class="form-control"></textarea>
       <button class="btn btn-primary my-4 w-50 mx-5" type="submit" (click)="onSubmit()">Add</button>
       <button class="btn btn-secondary my-4 w-50 mx-5" type="submit" (click)="loadKeyFromJSON()">Load From JSON</button>
       <h5 *ngIf="idGenerated">Id Generated {{idGenerated}}</h5>
       <p *ngIf="generalKeyJSON">JSON Web Key {{generalKeyJSON}}</p>
-      <ul>
+      <ol>
         <li *ngFor="let item of itemsList">{{item}}</li>
-      </ul>
+      </ol>
     </div>
   </div>
 </div>
